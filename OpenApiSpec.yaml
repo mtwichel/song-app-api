@@ -1,0 +1,132 @@
+openapi: 3.0.0
+# Added by API Auto Mocking Plugin
+servers:
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/mtwichel/MusicDB/1.0.0
+info:
+  description: This is a simple API
+  version: "1.0.0"
+  title: Simple Inventory API
+  contact:
+    email: you@your-company.com
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+tags:
+  - name: admins
+    description: Secured Admin-only calls
+  - name: developers
+    description: Operations available to regular developers
+paths:
+  /songs:
+    get:
+      tags: 
+      - Songs
+      summary: Searches for songs based on query parameters.
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  songs:
+                    type: array
+                    items: 
+                      $ref: '#/components/schemas/Song'
+    post:
+      tags:
+      - Songs
+      summary: Adds a new song.
+      responses:
+        200:
+          desciption: The new song has been added successfully.
+components:
+  schemas:
+    Song:
+      properties:
+        song_id:
+          type: string
+          format: uuidv4
+        name:
+          type: string
+        length:
+          type: integer
+          description: Length of the song in seconds.
+        youtube_url:
+          type: string
+          format: url
+          description: A link to listen to the song on YouTube.
+        is_single:
+          type: boolean
+          description: If true, the song doesn't belong to an album.
+        genres:
+          description: The genres this song belongs to
+          type: array
+          items:
+            type: string
+        artists:
+          type: array
+          items:
+            $ref: '#/components/schemas/Artist'
+    Artist:
+      properties:
+        artist_id:
+          type: string
+          format: uuidv4
+        name:
+          type: string
+        image_url:
+          type: string
+          format: url
+        genres:
+          description: The genres this artist belongs to.
+          type: array
+          items:
+            type: string
+    Album:
+      properties:
+        album_id:
+          type: string
+          format: uuidv4
+        name:
+          type: string
+        release_date:
+          type: string
+          format: ISODate
+        album_cover_url:
+          type: string
+          format: url
+        genres:
+          description: The genres this albumn belongs to.
+          type: array
+          items:
+            type: string
+        artists:
+          description: The artists that contributed to this album.
+          type: array
+          items:
+            $ref: '#/components/schemas/Artist'
+        songs:
+          description: The songs in this album in order.
+          type: array
+          items:
+            $ref: '#/components/schemas/Song'
+    Playlist:
+      properties:
+        playlist_id:
+          type: string
+          format: uuidv4
+        name:
+          type: string
+        genres:
+          description: The genres this playlist belongs to.
+          type: array
+          items:
+            type: string
+        songs:
+          description: The songs in this playlist in order.
+          type: array
+          items:
+            $ref: '#/components/schemas/Song'
